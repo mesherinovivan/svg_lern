@@ -1,0 +1,129 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+.map {
+    width: 90%;
+    max-width: 1300px;
+    margin: 2rem auto;
+    border: 1rem solid #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0 .5rem rgba(0, 0, 0, .3);
+}
+
+.map > svg {
+    width: 100%;
+    height: auto;
+    border-radius: .5rem;
+}
+.building {
+    transition: opacity .3s ease-in-out;
+}
+
+.building:hover {
+    cursor: pointer;
+    opacity: .8 !important;
+}
+
+.building.-available {
+    fill: #0f0 !important;
+}
+
+.building.-reserved {
+    fill: #f00 !important;
+}
+
+.building.-service {
+    fill: #fff !important;
+}
+    </style>
+
+</head>
+<body onload="buildEvents()">
+<div class='map' id='my-map'>
+    <svg
+       xmlns:dc="http://purl.org/dc/elements/1.1/"
+       xmlns:cc="http://creativecommons.org/ns#"
+       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+       xmlns:svg="http://www.w3.org/2000/svg"
+       xmlns="http://www.w3.org/2000/svg"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+       xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+       version="1.1"
+       id="svg7451"
+       width="167.44186"
+       height="110.51163"
+       viewBox="0 0 167.44186 110.51163"
+   >
+
+
+  <image
+     width="167.44186"
+     height="110.51163"
+     preserveAspectRatio="none"
+     xlink:href="X5L.jpeg"
+     id="image7459"
+     x="0"
+     y="0"
+      />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Layer 1" class="buildings_layer" />
+  <path
+     style="opacity:0.3;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 6.0465118,55.00775 5.2713179,40.279068 17.054264,37.023254 30.542636,38.573641 32.093024,52.837207 12.55814,58.418603 Z"
+     id="path8009"
+     inkscape:connector-curvature="0"
+     data-building-id="1"
+    class = "building"/>
+  <path
+     style="opacity:0.3;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 42.480621,69.581394 -0.620155,-13.178295 9.767442,-5.581396 5.116279,-1.550387 11.937985,1.550387 4.186047,6.511628 -0.310078,9.302326 -20.775194,6.821706 -5.736434,2.635659 z"
+     id="path8011"
+     inkscape:connector-curvature="0"
+     data-building-id="2"
+    class = "building"/>
+</svg>
+
+    <div class='info'></div>
+</div>
+<script >
+'use strict';
+const data = {
+    id_0: { status: 'service'   },
+    id_1: { status: 'available' },
+    id_2: { status: 'reserved'  },
+    id_3: { status: 'available' },
+    id_4: { status: 'available' },
+    id_5: { status: 'reserved'  },
+    messages: {
+        'available': 'Доступно для аренды',
+        'reserved':  'Зарезервировано',
+        'service':   'Доступно через 1-2 дня'
+    }
+};
+function buildEvents() {
+    var map = document.getElementById('my-map');
+    var buildings = map.querySelectorAll('.building');
+    const info = map.querySelector('.info');
+
+    for (let building of buildings) {
+        const id = building.getAttribute('data-building-id');
+        ////const status = data[`id_${id}`].status;
+
+        building.classList.add(`-${status}`);
+        building.addEventListener('click', () => {
+            console.log(id);
+        });
+
+        building.addEventListener('mouseover', () => {
+            info.innerHTML = data.messages[data[`id_${id}`].status];
+        });
+
+    }
+}
+    </script>
+</body>
+</html>
